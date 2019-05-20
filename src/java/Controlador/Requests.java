@@ -9,7 +9,7 @@ import javax.servlet.http.*;
 @WebServlet(name = "Requests", urlPatterns = {"/r"})
 public class Requests extends HttpServlet
 {
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)			throws ServletException, IOException {
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		
 		//Pasar a doPost
 		//Log in
@@ -18,7 +18,7 @@ public class Requests extends HttpServlet
 			String usu=request.getParameter("user");
 			String pass=request.getParameter("pass");
 			
-			if (usu!=null&&pass!=null)
+			if (!(usu==null||pass==null||usu.isEmpty()||pass.isEmpty()))
 			{
 				String usuario=new UsuariosController().conectar(usu,pass);
 				if (request.getSession(false)==null&&usuario!=null)
@@ -30,6 +30,21 @@ public class Requests extends HttpServlet
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/test.jsp");
 
 					dispatcher.forward(request, response);
+					
+					response.setContentType("text/html;charset=UTF-8");
+					try (PrintWriter out = response.getWriter()) {
+						/* TODO output your page here. You may use following sample code. */
+						
+						out.println("Hola "+sesion.getAttribute("usuario"));
+						
+					}
+				}
+				else
+				{
+					try (PrintWriter out = response.getWriter()) {
+						out.println("No he llegado");
+						
+					}
 				}
 			}
 		}
