@@ -1,6 +1,8 @@
 package Controlador;
 
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,8 +11,22 @@ import javax.servlet.http.*;
 @WebServlet(name = "Requests", urlPatterns = {"/r"})
 public class Requests extends HttpServlet
 {
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException
+	{
+		try (PrintWriter out = response.getWriter())
+		{
+			//out.println(request.getRequestURL().toString());
+			out.println(request.getContextPath());
+			//out.println(request.getContentType());
+			//out.println(request.getPathInfo());
+			//out.println(request.getHeader("Referer"));
+			
+		}
 		
+	}
+	
+	private void doLogin(HttpServletRequest request, HttpServletResponse response)
+	{
 		//Pasar a doPost
 		//Log in
 		if(request.getParameter("login")!=null)
@@ -18,37 +34,45 @@ public class Requests extends HttpServlet
 			String usu=request.getParameter("user");
 			String pass=request.getParameter("pass");
 			
+			StringBuffer a=new StringBuffer();
+			String b=a.toString();
+			
 			if (!(usu==null||pass==null||usu.isEmpty()||pass.isEmpty()))
 			{
 				String usuario=new UsuariosController().conectar(usu,pass);
-				if (request.getSession(false)==null&&usuario!=null)
+				request.getSession(false).invalidate();
+				
+				if (usuario!=null)
 				{
 					HttpSession sesion=request.getSession();
 					sesion.setAttribute("usuario", usuario);
 					
-					
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/test.jsp");
+	//				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/test.jsp");
 
-					dispatcher.forward(request, response);
+	//				dispatcher.forward(request, response);
 					
-					response.setContentType("text/html;charset=UTF-8");
-					try (PrintWriter out = response.getWriter()) {
-						/* TODO output your page here. You may use following sample code. */
-						
-						out.println("Hola "+sesion.getAttribute("usuario"));
-						
-					}
+					
+					
+					//	out.println("Hola "+sesion.getAttribute("usuario"));
+					
 				}
 				else
 				{
 					try (PrintWriter out = response.getWriter()) {
-						out.println("No he llegado");
+						out.println("Usuario o contraseña equivocados.");
 						
+					} catch (IOException ex) {
+						Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
 					}
 				}
 			}
 		}
 		//	
+	}
+	
+	private String parseUrl(String url)
+	{
+		return url.substring(7);
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -63,7 +87,17 @@ public class Requests extends HttpServlet
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest(request, response);
+		switch (request.getContextPath())
+		{
+			case "":
+				if(request.getParameter("login")!=null)
+					doLogin(request,response);
+				else
+					response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				break;
+			default:
+				processRequest(request, response);
+		}
 	}
 
 	/**
@@ -77,7 +111,12 @@ public class Requests extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		processRequest(request, response);
+		switch (request.getContextPath())
+		{
+			
+			default:
+				processRequest(request, response);
+		}
 	}
 
 	/**
