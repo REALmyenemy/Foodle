@@ -5,7 +5,11 @@
 <%--<sql:setDataSource var = "snapshot"
 		driver = "com.mysql.jdbc.Driver"
         url = "jdbc:mysql://localhost/foodle"
-        user = "root"  password = ""/>--%>
+        user = "root"  password = ""/>
+
+
+git branch --set-upstream-to origin/master master
+--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
