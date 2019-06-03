@@ -25,7 +25,7 @@ public class Requests extends HttpServlet
 		
 	}
 	
-	private void doLogin(HttpServletRequest request, HttpServletResponse response)
+	private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException
 	{
 		//Pasar a doPost
 		//Log in
@@ -47,14 +47,17 @@ public class Requests extends HttpServlet
 					HttpSession sesion=request.getSession();
 					sesion.setAttribute("usuario", usuario);
 					
-	//				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/test.jsp");
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/test.jsp");
 
-	//				dispatcher.forward(request, response);
-					
-					
-					
-					//	out.println("Hola "+sesion.getAttribute("usuario"));
-					
+					try {
+						dispatcher.forward(request, response);
+						
+						
+						
+//						out.println("Hola "+sesion.getAttribute("usuario"));
+					} catch (IOException ex) {
+						Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
+					}
 				}
 				else
 				{
@@ -89,13 +92,15 @@ public class Requests extends HttpServlet
 			throws ServletException, IOException {
 		switch (request.getContextPath())
 		{
-			case "":
+			case "/Foodle":
+				System.out.println("bbbbbbbb");
 				if(request.getParameter("login")!=null)
 					doLogin(request,response);
 				else
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				break;
 			default:
+				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa");
 				processRequest(request, response);
 		}
 	}
