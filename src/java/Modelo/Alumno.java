@@ -4,7 +4,7 @@ public class Alumno extends Usuario
 {
 	private int numero;
 	private int edad;
-	private int curso;
+	private String curso;
 
 	public Alumno()
 	{
@@ -22,7 +22,7 @@ public class Alumno extends Usuario
 		
 	}
 	
-	public Alumno(int numero,Usuario usu,int edad, int curso)
+	public Alumno(int numero,Usuario usu,int edad, String curso)
 	{
 		super(usu);
 		this.numero=numero;
@@ -47,14 +47,14 @@ public class Alumno extends Usuario
 	/**
 	 * @return the curso
 	 */
-	public int getCurso() {
+	public String getCurso() {
 		return curso;
 	}
 
 	/**
 	 * @param curso the curso to set
 	 */
-	public void setCurso(int curso) {
+	public void setCurso(String curso) {
 		this.curso = curso;
 	}
 

@@ -1,5 +1,6 @@
 package Controlador;
 
+import Modelo.Usuario;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,6 +8,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
+
 
 @WebServlet(name = "Requests", urlPatterns = {"/r"})
 public class Requests extends HttpServlet
@@ -27,51 +29,64 @@ public class Requests extends HttpServlet
 	
 	private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException
 	{
-		//Pasar a doPost
-		//Log in
-		if(request.getParameter("login")!=null)
-		{
-			String usu=request.getParameter("user");
-			String pass=request.getParameter("pass");
-			
-			StringBuffer a=new StringBuffer();
-			String b=a.toString();
-			
-			if (!(usu==null||pass==null||usu.isEmpty()||pass.isEmpty()))
-			{
-				String usuario=new UsuariosController().conectar(usu,pass);
-				request.getSession(false).invalidate();
-				
-				if (usuario!=null)
-				{
-					HttpSession sesion=request.getSession();
-					sesion.setAttribute("usuario", usuario);
-					
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/test.jsp");
+		String usu=request.getParameter("user");
+		String pass=request.getParameter("pass");
 
+		if (!(usu==null||pass==null||usu.isEmpty()||pass.isEmpty()))
+		{
+			UsuariosController uc=new UsuariosController();
+			String usuario=uc.conectar(usu,pass);
+			request.getSession().invalidate();
+			
+			if (usuario!=null)
+			{
+				HttpSession sesion=request.getSession();
+				if(UsuariosController.esAlumno(usuario))
+				{
+					sesion.setAttribute("usuario", uc.crearAlumno(usuario));
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/aLogin.jsp");
+					try {
+					dispatcher.forward(request, response);
+					} catch (IOException ex) {
+						Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				} else if(UsuariosController.esProfesor(usuario))
+				{
+					sesion.setAttribute("usuario", uc.crearProfesor(usuario));
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/pLogin.jsp");
 					try {
 						dispatcher.forward(request, response);
-						
-						
-						
-//						out.println("Hola "+sesion.getAttribute("usuario"));
+
+						} catch (IOException ex) {
+							Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
+						}
+				}
+				else //¿Ni alumno ni profesor? Algo raro pasa aquí....
+				{
+					try
+					{
+						response.sendError(HttpServletResponse.SC_NOT_FOUND); //Tirale un 404...
 					} catch (IOException ex) {
-						Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/"); //Si no puedes mandalo a relogear
 					}
 				}
-				else
-				{
-					try (PrintWriter out = response.getWriter()) {
-						out.println("Usuario o contraseña equivocados.");
-						
-					} catch (IOException ex) {
-						Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
-					}
+				
+
+				
+			}
+			else
+			{
+				try (PrintWriter out = response.getWriter()) {
+					out.println("Usuario o contraseña equivocados.");
+
+				} catch (IOException ex) {
+					Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
 				}
 			}
 		}
-		//	
+			
 	}
+	
 	
 	private String parseUrl(String url)
 	{
@@ -92,13 +107,7 @@ public class Requests extends HttpServlet
 			throws ServletException, IOException {
 		switch (request.getContextPath())
 		{
-			case "/Foodle":
-				System.out.println("bbbbbbbb");
-				if(request.getParameter("login")!=null)
-					doLogin(request,response);
-				else
-					response.sendError(HttpServletResponse.SC_NOT_FOUND);
-				break;
+			
 			default:
 				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa");
 				processRequest(request, response);
@@ -118,7 +127,13 @@ public class Requests extends HttpServlet
 			throws ServletException, IOException {
 		switch (request.getContextPath())
 		{
-			
+			case "/Foodle":
+				System.out.println("bbbbbbbb");
+				if(request.getParameter("login")!=null)
+					doLogin(request,response);
+				else
+					response.sendError(HttpServletResponse.SC_NOT_FOUND);
+				break;
 			default:
 				processRequest(request, response);
 		}
