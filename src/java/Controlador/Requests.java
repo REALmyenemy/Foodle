@@ -109,7 +109,6 @@ public class Requests extends HttpServlet
 		{
 			
 			default:
-				System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaa");
 				processRequest(request, response);
 		}
 	}
@@ -128,12 +127,25 @@ public class Requests extends HttpServlet
 		switch (request.getContextPath())
 		{
 			case "/Foodle":
-				System.out.println("bbbbbbbb");
+				
 				if(request.getParameter("login")!=null)
 					doLogin(request,response);
 				else
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				break;
+				
+			case "/Foodle/altaAlumno.jsp":
+				if(request.getParameter("alta")!=null)
+				{
+					UsuariosController.altaAlumno(request);
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/pLogin.jsp");
+					try {
+						dispatcher.forward(request, response);
+
+						} catch (IOException ex) {
+							Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
+						}
+				}
 			default:
 				processRequest(request, response);
 		}

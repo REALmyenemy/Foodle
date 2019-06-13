@@ -1,15 +1,21 @@
 package Controlador;
 
 import Modelo.*;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.*;
+import java.util.logging.*;
+import javax.servlet.http.HttpServletRequest;
+
 
 
 public class UsuariosController
 {
 	private static Conectar c=new Conectar();
+
+	static void altaAlumno(HttpServletRequest request)
+	{ 
+		Usuario usu= new Usuario(request.getParameter("login"),request.getParameter("pass"));
+	}
+	
 	public String conectar(Usuario usu)
 	{
 		
@@ -24,7 +30,7 @@ public class UsuariosController
 			if(rst.next())
 			{
 				String dbp=rst.getString(1);
-				System.out.println(dbp+" "+usuario);
+
 //				if (pass.compareTo(dbp)==0||BCrypt.checkpw(pass, dbp))
 				if (pass.compareTo(dbp)==0||1==2)
 				{
@@ -47,7 +53,7 @@ public class UsuariosController
 	{
 		
 		try {
-			c.ejecutar("select usuario from profesores where usuario="+usuario);
+			c.ejecutar("select usuario from profesores where usuario='"+usuario+"'");
 			ResultSet rst=c.getRset();
 			if(rst.next())
 			{
@@ -85,7 +91,8 @@ public class UsuariosController
 			if(rst.next())
 			{
 				Usuario ual=new Usuario(alumno,"");
-				Alumno al=new Alumno(rst.getInt("id"),ual,rst.getInt("edad"),rst.getString(alumno));
+//				updateSeen(alumno);
+				Alumno al=new Alumno(rst.getInt("id"),ual,rst.getInt("edad"),rst.getString("curso"));
 				return al;
 			}
 		} catch (SQLException ex) {
@@ -97,7 +104,7 @@ public class UsuariosController
 	public Profesor crearProfesor(String profesor)
 	{
 		try {
-			c.ejecutar("select * from profesores where usuario="+profesor);
+			c.ejecutar("select * from profesores where usuario='"+profesor+"'");
 			ResultSet rst=c.getRset();
 			if(rst.next())
 			{
@@ -109,5 +116,11 @@ public class UsuariosController
 			Logger.getLogger(UsuariosController.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
+	}
+	
+	private void updateSeen(String usuario)
+	{
+		
+//		c.ejecutar("update usuarios set last_seen='"++"' where id='"+usuario+"'");
 	}
 }
