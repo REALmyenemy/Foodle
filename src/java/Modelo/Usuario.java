@@ -3,14 +3,15 @@ package Modelo;
 import java.io.Serializable;
 import java.sql.Date;
 
+
 public class Usuario implements Serializable
 {
-	protected String id;
-	protected String password;
-	protected String nombre;
-	protected String descripcion;
-	protected Date last_seen;
-
+	protected String id="";
+	protected String password="";
+	protected String nombre="";
+	protected String descripcion="";
+	protected Date last_seen=new Date(new java.util.Date().getTime());
+	
 	
 	public Usuario()
 	{

@@ -2,6 +2,7 @@ package Controlador;
 
 import Modelo.Usuario;
 import java.io.*;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -124,6 +125,7 @@ public class Requests extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		switch (request.getContextPath())
 		{
 			case "/Foodle":
@@ -137,13 +139,16 @@ public class Requests extends HttpServlet
 			case "/Foodle/altaAlumno.jsp":
 				if(request.getParameter("alta")!=null)
 				{
-					UsuariosController.altaAlumno(request);
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/pLogin.jsp");
 					try {
+						UsuariosController.altaAlumno(request);
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/pLogin.jsp");
+					
 						dispatcher.forward(request, response);
 
 						} catch (IOException ex) {
 							Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex);
+						} catch (SQLException ex) {
+							Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex); //Salta si usuario duplicado
 						}
 				}
 			default:

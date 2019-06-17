@@ -2,6 +2,7 @@ package Controlador;
 
 import Modelo.*;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.logging.*;
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,11 +12,7 @@ public class UsuariosController
 {
 	private static Conectar c=new Conectar();
 
-	static void altaAlumno(HttpServletRequest request)
-	{ 
-		Usuario usu= new Usuario(request.getParameter("login"),request.getParameter("pass"));
-	}
-	
+
 	public String conectar(Usuario usu)
 	{
 		
@@ -117,6 +114,51 @@ public class UsuariosController
 		}
 		return null;
 	}
+	
+	public static ArrayList<Alumno> getAlumnos() throws SQLException
+	{
+		Conectar con=new Conectar();
+		ArrayList<Alumno> alumnos=new ArrayList();
+		c.ejecutar("select * from alumnos");
+		ResultSet rs, rst=c.getRset();
+		Alumno aux;
+		while(rst.next())
+		{
+			aux=new Alumno();
+			aux.setId(rst.getString("usuario"));
+			con.ejecutar("select * from usuarios where id='"+aux.getId()+"'");
+			rs=con.getRset();
+			rs.next();
+			aux.setDescripcion(rs.getString("descripcion"));
+			aux.setNombre(rs.getString("nombre"));
+			aux.setLast_seen(rs.getDate("last_seen"));
+			aux.setNumero(rst.getInt("id"));
+			aux.setCurso(rst.getString("curso"));
+			aux.setEdad(rst.getInt("edad"));
+			alumnos.add(aux);
+			rs.close();
+		}
+		rst.close();
+		return alumnos;
+	}
+	
+	static void altaAlumno(HttpServletRequest request) throws SQLException
+	{
+		c.ejecutar("insert into usuarios values('"+
+			request.getParameter("login")+"','"+
+			request.getParameter("pass")+"','"+
+			request.getParameter("name")+"','"+
+			request.getParameter("desc")+"','"+
+			new java.sql.Date(new java.util.Date().getTime())+
+		"')");
+		
+		c.ejecutar ("insert into alumnos values ('"
+			+ request.getParameter("login")+"',"
+			+ request.getParameter("edad")+",'"
+			+ request.getParameter("login")+"','"
+			+ "')");
+	}
+	
 	
 	private void updateSeen(String usuario)
 	{
