@@ -4,6 +4,7 @@ drop table if exists instanciaExamen;
 drop table if exists respuestas;
 drop table if exists preguntas;
 drop table if exists examenes;
+drop table if exists matriculas;
 drop table if exists materias;
 drop table if exists alumnos;
 drop table if exists profesores;
@@ -42,6 +43,15 @@ create table materias
 	nombre varchar(30) not null,
 	creador integer,
 	constraint foreign key fk_mat_prof (creador) references profesores (id) on delete cascade
+);
+
+create table matriculas
+(
+	alumno integer,
+	materia integer,
+	constraint pk_matriculas primary key (alumno,materia),
+	constraint fk_mat_alu foreign key (alumno) references alumnos (id) on delete cascade,
+	constraint fk_mat_mat foreign key (materia) references materias (id) on delete cascade
 );
 
 create table examenes

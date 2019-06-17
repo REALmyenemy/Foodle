@@ -144,7 +144,9 @@ public class UsuariosController
 	
 	static void altaAlumno(HttpServletRequest request) throws SQLException
 	{
-		c.ejecutar("insert into usuarios values('"+
+		System.out.println(request.getParameter("login")+"aaaaaaaaaaaa");
+		System.out.println(new java.sql.Date(new java.util.Date().getTime())+"aaaaaaaaaaaa");
+		c.lanzar("insert into usuarios values('"+
 			request.getParameter("login")+"','"+
 			request.getParameter("pass")+"','"+
 			request.getParameter("name")+"','"+
@@ -152,17 +154,18 @@ public class UsuariosController
 			new java.sql.Date(new java.util.Date().getTime())+
 		"')");
 		
-		c.ejecutar ("insert into alumnos values ('"
+		c.lanzar ("insert into alumnos values ("
+			+ null + ",'"
 			+ request.getParameter("login")+"',"
 			+ request.getParameter("edad")+",'"
-			+ request.getParameter("login")+"','"
-			+ "')");
+			+ request.getParameter("curso")+"'"
+			+ ")");
 	}
 	
 	
 	private void updateSeen(String usuario)
 	{
 		
-//		c.ejecutar("update usuarios set last_seen='"++"' where id='"+usuario+"'");
+//		c.lanzar("update usuarios set last_seen='"++"' where id='"+usuario+"'");
 	}
 }

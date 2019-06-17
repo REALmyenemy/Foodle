@@ -33,6 +33,10 @@ public class Conectar
     {
         rset=statement.executeQuery(sql);
     }
+	public void lanzar(String sql) throws SQLException
+    {
+        statement.executeUpdate(sql);
+    }
     public ResultSet getRset()
     {
         return rset;

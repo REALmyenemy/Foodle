@@ -19,11 +19,14 @@
 						<c:out value="${sessionScope.mensajeError}"></c:out>
 					</p>
 				</c:if>
-					<c:set var="lista" value="${uc.getAlumnos()}"/>
-					<c:forEach lista var="alumno" >
-						<c:out value="${alumno.nombre}"></c:out> <br />
-					</c:forEach>
-				
+			<select multiple="multiple" name="alumnos">
+				<c:set var="lista" value="${uc.getAlumnos()}"/>
+				<c:forEach items="${lista}" var="alumno" >
+					<option value="${alumno.numero}">
+						<c:out value="${alumno.nombre}"></c:out>
+					</option>
+				</c:forEach>
+			</select>
 			</form>
 		</body>
 	</c:when>

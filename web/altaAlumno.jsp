@@ -12,7 +12,7 @@
 			<title>Foodle</title>
 		</head>
 		<body>
-			<form method="post" action="/r">
+			<form method="post" action="r">
 				<a href="pLogin.jsp" style="color:red;"> < Volver </a>
 				<c:if test="${sessionScope.mensajeError!=''}">
 					<p style="color:red;">
@@ -21,7 +21,7 @@
 				</c:if>
 					
 				<p>Login*:&nbsp;&nbsp;<input type="text" name="login"/></p>
-				<p>Contrase&ntilde;a*:&nbsp;&nbsp;<input type="pass" name="pass"></p>
+				<p>Contrase&ntilde;a*:&nbsp;&nbsp;<input type="password" name="pass"></p>
 				<p>Nombre*:&nbsp;&nbsp;<input type="text" name="name" /></p>
 				<p>Descripci&oacute;n:&nbsp;&nbsp;<input type="textarea" name="desc" /></p>
 				<p>Edad:&nbsp;&nbsp;<input type="number" name="edad"></p>

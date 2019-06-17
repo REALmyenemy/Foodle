@@ -19,10 +19,9 @@ public class Requests extends HttpServlet
 		try (PrintWriter out = response.getWriter())
 		{
 			//out.println(request.getRequestURL().toString());
-			out.println(request.getContextPath());
-			//out.println(request.getContentType());
-			//out.println(request.getPathInfo());
-			//out.println(request.getHeader("Referer"));
+			
+			
+			out.println(parseUrl(request.getHeader("Referer")));
 			
 		}
 		
@@ -68,7 +67,7 @@ public class Requests extends HttpServlet
 					{
 						response.sendError(HttpServletResponse.SC_NOT_FOUND); //Tirale un 404...
 					} catch (IOException ex) {
-						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/"); //Si no puedes mandalo a relogear
+						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/"); //Si no puedes, mandalo a relogear
 					}
 				}
 				
@@ -91,7 +90,10 @@ public class Requests extends HttpServlet
 	
 	private String parseUrl(String url)
 	{
-		return url.substring(7);
+		url=url.substring(url.indexOf("Foodle/")+7);
+		if (url.contains("?"))
+			url.substring(0,url.indexOf("?"));
+		return url;
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -125,18 +127,18 @@ public class Requests extends HttpServlet
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		switch (request.getContextPath())
+
+		switch (parseUrl(request.getHeader("Referer")))
 		{
-			case "/Foodle":
-				
+			case "":
 				if(request.getParameter("login")!=null)
 					doLogin(request,response);
 				else
 					response.sendError(HttpServletResponse.SC_NOT_FOUND);
 				break;
 				
-			case "/Foodle/altaAlumno.jsp":
+			case "altaAlumno.jsp":
+
 				if(request.getParameter("alta")!=null)
 				{
 					try {
@@ -151,6 +153,11 @@ public class Requests extends HttpServlet
 							Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex); //Salta si usuario duplicado
 						}
 				}
+				else
+				{
+					System.out.println("Paso por el else");
+				}
+				break;
 			default:
 				processRequest(request, response);
 		}
