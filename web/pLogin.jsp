@@ -19,12 +19,12 @@
 					<a href="matriculaAlumnos.jsp" class="col-sm-6">Matricular a alumno</a>
 				</div>
 				<div class="row">
-					<form action="" class="col-sm-6">
+					<form action="r" class="col-sm-6">
 						<input type="text" name="materia" /><br />
 						<label for="alta" class="link">Alta materia</label>
 						<input type="submit" class="hidden" name="alta" id="alta" />
 					</form>
-					<a href="altaExamen.jsp"  class="col-sm-6">Crear ex&aacute;men</a>
+					<a href="altaExamen.jsp" class="col-sm-6">Crear ex&aacute;men</a>
 				</div>
 				
 				<div class="row">

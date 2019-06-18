@@ -47,11 +47,9 @@ create table materias
 
 create table matriculas
 (
-	alumno integer,
-	materia integer,
-	constraint pk_matriculas primary key (alumno,materia),
-	constraint fk_mat_alu foreign key (alumno) references alumnos (id) on delete cascade,
-	constraint fk_mat_mat foreign key (materia) references materias (id) on delete cascade
+	alumno integer references alumnos (id) on delete cascade,
+	materia integer references materias (id) on delete cascade,
+	constraint pk_matriculas primary key (alumno,materia)
 );
 
 create table examenes
