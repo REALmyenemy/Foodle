@@ -20,9 +20,14 @@
 				</div>
 				<div class="row">
 					<form action="r" class="col-sm-6">
-						<input type="text" name="materia" /><br />
+						<p style="color:red;">
+							<c:out value="${sessionScope.mensajeError}"></c:out>
+							<c:set scope="session" var="mensajeError" value="" ></c:set>
+						</p>
+						<p>id: <input type="text" name="matId" placeholder="Max 8 caracteres" lenght="8" /></p>
+						<p>Materia: <input type="text" name="materia" /></p>
 						<label for="alta" class="link">Alta materia</label>
-						<input type="submit" class="hidden" name="alta" id="alta" />
+						<input type="submit" class="hidden" id="alta" value="" />
 					</form>
 					<a href="altaExamen.jsp" class="col-sm-6">Crear ex&aacute;men</a>
 				</div>

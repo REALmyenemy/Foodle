@@ -1,7 +1,6 @@
 package Controlador;
 
 import Modelo.Profesor;
-import Modelo.Usuario;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -103,19 +102,28 @@ public class Requests extends HttpServlet
 	{
 		switch (parseUrl(request.getHeader("Referer")))
 		{
-			case "plogin.jsp":
+			case "r":
+			case "pLogin.jsp":
 				String materia=request.getParameter("materia");
-				if (materia!=null && materia!="")
+				String id=request.getParameter("matId");
+				
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/pLogin.jsp");
+				
+				if (materia!=null && materia!=""&&id!=null && id!="")
 				{
 					MateriasController mc=new MateriasController();
-					
-					if (!mc.insertarMateria(materia, ((Profesor) request.getSession(false).getAttribute("usuario")).getNumero()))
+
+					if (!mc.insertarMateria(materia, ((Profesor) request.getSession(false).getAttribute("usuario")).getNumero(),id))
 					{
-						throw new JavaIOException();
+						request.getSession(false).setAttribute("mensajeError", "Materia ya existente");
 					}
 				}
+				
+				
+				dispatcher.forward(request, response);
+
 				break;
-			
+				
 			default:
 				processRequest(request, response);
 		}
@@ -160,5 +168,7 @@ public class Requests extends HttpServlet
 	public String getServletInfo() {
 		return "Short description";
 	}
+	
+	
 
 }

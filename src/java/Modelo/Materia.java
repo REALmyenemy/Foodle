@@ -5,22 +5,16 @@ import java.io.Serializable;
 
 public class Materia implements Serializable
 {
-	private int id;
+	private String id;
 	private String nombre;
 	private  int creador;
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
 
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(int id) {
-		this.id = id;
+		this.setId(id);
 	}
 
 	/**
@@ -49,6 +43,13 @@ public class Materia implements Serializable
 	 */
 	public void setCreador(int creador) {
 		this.creador = creador;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 }

@@ -48,7 +48,7 @@ create table materias
 create table matriculas
 (
 	alumno integer references alumnos (id) on delete cascade,
-	materia integer references materias (id) on delete cascade,
+	materia varchar(8) references materias (id) on delete cascade,
 	constraint pk_matriculas primary key (alumno,materia)
 );
 

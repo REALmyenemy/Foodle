@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <jsp:useBean id="uc" class="Controlador.UsuariosController"/>
+<jsp:useBean id="mc" class="Controlador.MateriasController"/>
 <!DOCTYPE html>
 <html>
     
@@ -12,16 +13,25 @@
 			<title>Foodle</title>
 		</head>
 		<body>
-			<form method="post" action="/r">
-				<a href="pLogin.jsp" style="color:red;"> < Volver </a>
-				<c:if test="${sessionScope.mensajeError!=''}">
-					<p style="color:red;">
-						<c:out value="${sessionScope.mensajeError}"></c:out>
-					</p>
-				</c:if>
+			<form method="post" action="r">
+			<a href="pLogin.jsp" style="color:red;"> < Volver </a><br />
+			<c:if test="${sessionScope.mensajeError!=''}">
+				<p style="color:red;">
+					<c:out value="${sessionScope.mensajeError}"></c:out>
+				</p>
+			</c:if>
 			<select multiple="multiple" name="alumnos">
 				<c:set var="lista" value="${uc.getAlumnos()}"/>
 				<c:forEach items="${lista}" var="alumno" >
+					<option value="${alumno.numero}">
+						<c:out value="${alumno.nombre}"></c:out>
+					</option>
+				</c:forEach>
+			</select>
+				
+			<select multiple="multiple" name="alumnos">
+				<c:set var="materias" value="${mc.getMaterias()}"/>
+				<c:forEach items="${materias}" var="alumno" >
 					<option value="${alumno.numero}">
 						<c:out value="${alumno.nombre}"></c:out>
 					</option>
