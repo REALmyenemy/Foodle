@@ -14,29 +14,33 @@
 		</head>
 		<body>
 			<form method="post" action="r">
-			<a href="pLogin.jsp" style="color:red;"> < Volver </a><br />
-			<c:if test="${sessionScope.mensajeError!=''}">
-				<p style="color:red;">
-					<c:out value="${sessionScope.mensajeError}"></c:out>
-				</p>
-			</c:if>
-			<select multiple="multiple" name="alumnos">
-				<c:set var="lista" value="${uc.getAlumnos()}"/>
-				<c:forEach items="${lista}" var="alumno" >
-					<option value="${alumno.numero}">
-						<c:out value="${alumno.nombre}"></c:out>
-					</option>
-				</c:forEach>
-			</select>
+				<a href="pLogin.jsp" style="color:red;"> < Volver </a><br />
+				<c:if test="${sessionScope.mensajeError!=''}">
+					<p style="color:red;">
+						<c:out value="${sessionScope.mensajeError}"></c:out>
+					</p>
+				</c:if>
+				<select multiple="multiple" name="alumnos">
+					<c:set var="lista" value="${uc.getAlumnos()}"/>
+					<c:forEach items="${lista}" var="alumno" >
+						<option value="${alumno.numero}">
+							<c:out value="${alumno.nombre}"></c:out>
+						</option>
+					</c:forEach>
+				</select>
+
+				<select multiple="multiple" name="materias">
+					<c:set var="materias" value="${mc.getMaterias(sessionScope.usuario)}"/>
+					<c:forEach items="${materias}" var="materia" >
+						<option value="${materia.id}">
+							<c:out value="${materia.nombre}"></c:out>
+						</option>
+					</c:forEach>
+				</select>
 				
-			<select multiple="multiple" name="alumnos">
-				<c:set var="materias" value="${mc.getMaterias()}"/>
-				<c:forEach items="${materias}" var="alumno" >
-					<option value="${alumno.numero}">
-						<c:out value="${alumno.nombre}"></c:out>
-					</option>
-				</c:forEach>
-			</select>
+				
+				<br />
+				<input type="submit" />
 			</form>
 		</body>
 	</c:when>

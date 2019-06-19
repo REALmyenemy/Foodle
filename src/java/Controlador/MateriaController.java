@@ -18,7 +18,7 @@ public class MateriaController
 			while(rst.next())
 			{
 				aux=new Materia();
-				aux.setId(rst.getInt("id"));
+				aux.setId(rst.getString("id"));
 				aux.setCreador(rst.getInt("creador"));
 				aux.setNombre(rst.getString("nombre"));
 			}
@@ -40,7 +40,7 @@ public class MateriaController
 			while(rst.next())
 			{
 				aux=new Materia();
-				aux.setId(rst.getInt("id"));
+				aux.setId(rst.getString("id"));
 				aux.setCreador(creador);
 				aux.setNombre(rst.getString("nombre"));
 			}
@@ -53,11 +53,11 @@ public class MateriaController
 		return materias;
 	}
 	
-	public Materia getMateria(int id)
+	public Materia getMateria(String id)
 	{
 		Materia resultado=null;
 		try {
-			c.ejecutar("select * from materias where id="+id);
+			c.ejecutar("select * from materias where id='"+id+"'");
 			ResultSet rst=c.getRset();
 			if(rst.next())
 			{

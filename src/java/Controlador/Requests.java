@@ -92,7 +92,7 @@ public class Requests extends HttpServlet
 	{
 		url=url.substring(url.indexOf("Foodle/")+7);
 		if (url.contains("?"))
-			url.substring(0,url.indexOf("?"));
+			url=url.substring(0,url.indexOf("?"));
 		return url;
 	}
 
@@ -158,6 +158,12 @@ public class Requests extends HttpServlet
 							Logger.getLogger(Requests.class.getName()).log(Level.SEVERE, null, ex); //Salta si usuario duplicado
 						}
 				}
+				break;
+			case "matriculaAlumnos.jsp":
+					MateriasController mc=new MateriasController();
+					mc.matricularAlumnos(request);
+					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/pLogin.jsp");
+					dispatcher.forward(request, response);
 				break;
 			default:
 				processRequest(request, response);

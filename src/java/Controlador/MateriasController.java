@@ -35,23 +35,39 @@ public class MateriasController
 	}
 	
 	
-	public static ArrayList<Materia> getMaterias() throws SQLException
+	
+	public static ArrayList<Materia> getMaterias(Object usuario) throws SQLException
 	{
-		
+		Profesor p=(Profesor) usuario;
 		ArrayList<Materia> materias=new ArrayList();
-		c.ejecutar("select * from materias where creador="+id);
+		c.ejecutar("select * from materias where creador="+p.getNumero());
 		ResultSet rs, rst=c.getRset();
 		Materia aux;
 		while(rst.next())
 		{
 			aux=new Materia();
-			aux.setCreador(id);
+			aux.setCreador(p.getNumero());
 			aux.setNombre(rst.getString("nombre"));
 			aux.setId(rst.getString("id"));			
 			materias.add(aux);			
 		}
 		rst.close();
 		return materias;
+	}
+
+	void matricularAlumnos(HttpServletRequest request) {
+		String [] alumnos=request.getParameterValues("alumnos");
+		String [] materias=request.getParameterValues("materias");
+		
+		for (int i=0;i<alumnos.length;i++)
+		{
+			System.out.println(alumnos[i]);
+			for (int j=0;j<materias.length;j++)
+			{
+				System.out.println(alumnos[j]);
+				matriculaAlumno(Integer.parseInt(alumnos[i]),materias[j]);
+			}
+		}
 	}
 	
 

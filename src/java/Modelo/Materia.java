@@ -9,12 +9,18 @@ public class Materia implements Serializable
 	private String nombre;
 	private  int creador;
 
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
-		this.setId(id);
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**
@@ -45,11 +51,7 @@ public class Materia implements Serializable
 		this.creador = creador;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+
+
 	
 }
