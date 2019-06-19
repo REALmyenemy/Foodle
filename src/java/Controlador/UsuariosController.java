@@ -29,7 +29,7 @@ public class UsuariosController
 				String dbp=rst.getString(1);
 
 //				if (pass.compareTo(dbp)==0||BCrypt.checkpw(pass, dbp))
-				if (pass.compareTo(dbp)==0||1==2)
+				if (pass.compareTo(dbp)==0)
 				{
 					c.getRset().close();
 					return usuario;

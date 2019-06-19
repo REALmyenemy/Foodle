@@ -99,8 +99,8 @@ public class Requests extends HttpServlet
 
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
 		switch (parseUrl(request.getHeader("Referer")))
 		{
 			case "plogin.jsp":
@@ -109,7 +109,10 @@ public class Requests extends HttpServlet
 				{
 					MateriasController mc=new MateriasController();
 					
-					mc.insertarMateria(materia, ((Profesor) request.getSession(false).getAttribute("usuario")).getNumero());
+					if (!mc.insertarMateria(materia, ((Profesor) request.getSession(false).getAttribute("usuario")).getNumero()))
+					{
+						throw new JavaIOException();
+					}
 				}
 				break;
 			

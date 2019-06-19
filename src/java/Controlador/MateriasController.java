@@ -8,12 +8,13 @@ public class MateriasController
 {
 	private static Conectar c=new Conectar();
 	
-	public void insertarMateria(String materia,int id)
+	public boolean insertarMateria(String materia,int id)
 	{
 		try {
 			c.lanzar("insert into materia values ('"+materia+"',"+id+")");
+			return true;
 		} catch (SQLException ex) {
-			Logger.getLogger(MateriasController.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
 		}
 	}
 	
