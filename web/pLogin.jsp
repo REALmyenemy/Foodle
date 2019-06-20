@@ -29,7 +29,11 @@
 						<label for="alta" class="link">Alta materia</label>
 						<input type="submit" class="hidden" id="alta" value="" />
 					</form>
-					<a href="altaExamen.jsp" class="col-sm-6">Crear ex&aacute;men</a>
+<!--					<form action="r" class="col-sm-6" method="post">
+						<label for="altaexamen" class="link">Crear ex&aacute;men</label>
+						<input type="submit" class="hidden" id="altaexamen" value="" />
+					</form>-->
+						<a href="altaExamen.jsp" class="col-sm-6"></a>
 				</div>
 				
 				<div class="row">
