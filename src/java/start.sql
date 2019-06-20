@@ -55,7 +55,8 @@ create table matriculas
 create table examenes
 (
 	id integer auto_increment primary key,
-	materia varchar(8) not null references materias (id) on delete cascade
+	materia varchar(8) not null references materias (id) on delete cascade,
+	desordenar boolean
 );
 
 
