@@ -27,7 +27,8 @@ public class MateriasController
 	public boolean matriculaAlumno(int alumno,String materia)
 	{
 		try {
-			c.lanzar("insert into matricula values ("+alumno+",'"+materia+"')");
+			System.out.println("alumno"+alumno+" materia"+materia);
+			c.lanzar("insert into matriculas values ("+alumno+",'"+materia+"')");
 			return true;
 		} catch (SQLException ex) {
 			return false;
@@ -61,10 +62,9 @@ public class MateriasController
 		
 		for (int i=0;i<alumnos.length;i++)
 		{
-			System.out.println(alumnos[i]);
+			
 			for (int j=0;j<materias.length;j++)
 			{
-				System.out.println(alumnos[j]);
 				matriculaAlumno(Integer.parseInt(alumnos[i]),materias[j]);
 			}
 		}
