@@ -131,23 +131,26 @@ public class ExamenServlet extends HttpServlet {
 
 			for (int i=0;i<preguntas.size();i++)
 			{
-				System.out.println("0000000000000000");
 				JPregunta pregunta=preguntas.get(i);
-				System.out.println("aaaaaaaaaa");
+				
 				if (pregunta.getImagen()!=null)
 					pregunta.setDirImagen(getServletContext().getRealPath("/")+examen+"/"+pregunta.getImagen().getSubmittedFileName());
 				else
 					pregunta.setDirImagen("");
 
-				c.lanzar("insert into preguntas values ((select count(*) from preguntas as p),"+examen+",'"+pregunta.getPregunta()+"','"+pregunta.getDirImagen()+"',"+pregunta.getSrespuestas().size()+")");
-				System.out.println("ccccccccccccccc");
+				c.lanzar("insert into preguntas values ((select count(*) from preguntas as p where examen="+examen+"),"+examen+",'"+pregunta.getPregunta()+"','"+pregunta.getDirImagen()+"',"+pregunta.getSrespuestas().size()+")");
+				
 				ArrayList<Respuesta> respuestas=pregunta.getSrespuestas();
 				for (int j=0; j<respuestas.size();j++)
 				{
+					
 					Respuesta r=respuestas.get(j);
-					c.lanzar("insert into respuestas values("+examen+","+i+",'"+r.getTexto()+"',"+r.getValorSelect()+","+r.getValorNoSelect()+")");
+					
+					c.lanzar("insert into respuestas values((select count(*) from respuestas as r where examen="+examen+" and pregunta="+i+"),"+examen+","+i+",'"+r.getTexto()+"',"+r.getValorSelect()+","+r.getValorNoSelect()+")");
+					System.out.println("qqqqqqqqqqqqqqqqqqqqq");
 				}
-				procesarImagen(pregunta);
+				if (pregunta.getDirImagen()!="")
+					procesarImagen(pregunta);
 			}
 
 			request.getSession(false).setAttribute("preguntas",null);
