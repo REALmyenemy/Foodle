@@ -23,6 +23,7 @@ public class ExamenServlet extends HttpServlet {
 	private final int max_size = 1024 * 1024 * 16;
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException
 	{
+		request.setCharacterEncoding("UTF-8");
 		RequestDispatcher dispatcher;		
 		if (request.getParameter("submit").toLowerCase().compareTo("agregar pregunta")==0)
 		{
@@ -31,7 +32,7 @@ public class ExamenServlet extends HttpServlet {
 		}
 		else if (request.getParameter("submit").toLowerCase().compareTo("crear nuevo ex&aacute;men")==0||request.getParameter("submit").toLowerCase().compareTo("crear nuevo exámen")==0)
 		{
-			crearPregunta(request);
+			crearExamen(request);
 			dispatcher= getServletContext().getRequestDispatcher("/pLogin.jsp");
 		}else	
 		{	
@@ -52,10 +53,6 @@ public class ExamenServlet extends HttpServlet {
 		processRequest(request, response);
 	}
 	
-	private void subirImagen(Part imagen)
-	{
-		
-	}
 
 	@Override
 	public String getServletInfo() {
@@ -66,12 +63,18 @@ public class ExamenServlet extends HttpServlet {
 	private int existeONo(int index, HttpServletRequest request)
 	{
 		String a;
-		
-		if (request.getParameter("respuesta"+index).compareTo("")==0)
-			return index;
-		else
+		try
 		{
-			return existeONo(index+1,request);
+			if (request.getParameter("respuesta"+index).compareTo("")==0)
+				return index;
+			else
+			{
+				return existeONo(index+1,request);
+			}
+		}
+		catch (Exception e)
+		{
+			return index;
 		}
 	}
 	
@@ -87,7 +90,6 @@ public class ExamenServlet extends HttpServlet {
 		preguntas=(ArrayList<JPregunta>)request.getSession(false).getAttribute("preguntas");
 		JPregunta pregunta=new JPregunta();
 		try {
-			//pregunta.setDirImagen(getServletContext().getRealPath("/"+sesionExamen+"/"+preguntas.size()));
 			pregunta.setImagen(request.getPart("imagen"));
 		} catch (IOException ex) {
 			Logger.getLogger(ExamenServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -107,39 +109,50 @@ public class ExamenServlet extends HttpServlet {
 			pregunta.getSrespuestas().add(r);
 		}
 		preguntas.add(pregunta);
-		request.getSession(false).setAttribute("preguntas", request);
+		request.getSession(false).setAttribute("preguntas", preguntas);
 	}
 	private void crearExamen(HttpServletRequest request)
 	{
+		
 		Conectar c= new Conectar();
-			try {
-				c.lanzar("insert into examen values ('"+request.getParameter("materia")+"',"+request.getParameter("desordenar"));
-				c.ejecutar("select id from examen");
-				ResultSet rst=c.getRset();
-				rst.next();
-				
-				ArrayList<JPregunta> preguntas=(ArrayList<JPregunta>)request.getSession(false).getAttribute("preguntas");
-				int examen=rst.getInt(1);
-				String materia=request.getParameter("materia");
-				for (int i=0;i<preguntas.size();i++)
+		
+		int var=1;
+		try {
+			String desordenar=request.getParameter("desordenar")!=null ? "true":"false";
+			c.lanzar("insert into examenes values (select count(*) from examenes as e,'"+request.getParameter("materia")+"',"+desordenar+")");
+			System.out.println("AAAAAAAAAAA"+var++);
+			c.ejecutar("select id from examen");
+			System.out.println("AAAAAAAAAAA"+var++);
+			ResultSet rst=c.getRset();
+			System.out.println("AAAAAAAAAAA"+var++);
+			rst.next();
+			System.out.println("AAAAAAAAAAA"+var++);
+			ArrayList<JPregunta> preguntas=(ArrayList<JPregunta>)request.getSession(false).getAttribute("preguntas");
+			System.out.println("AAAAAAAAAAA"+var++);
+			int examen=rst.getInt(1);
+			System.out.println("AAAAAAAAAAA"+var++);
+			String materia=request.getParameter("materia");
+			System.out.println("AAAAAAAAAAA"+var++);
+			for (int i=0;i<preguntas.size();i++)
+			{
+				JPregunta pregunta=preguntas.get(i);
+				pregunta.setDirImagen(getServletContext().getRealPath("/")+examen+"/"+pregunta.getImagen().getSubmittedFileName());
+
+				c.lanzar("insert into preguntas values ("+examen+"',"+pregunta.getDirImagen()+"',"+pregunta.getSrespuestas().size()+")");
+				ArrayList<Respuesta> respuestas=pregunta.getSrespuestas();
+				for (int j=0; j<respuestas.size();j++)
 				{
-					JPregunta pregunta=preguntas.get(i);
-					pregunta.setDirImagen(getServletContext().getRealPath("/")+examen+"/"+pregunta.getImagen().getSubmittedFileName());
-					
-					c.lanzar("insert into preguntas values ("+examen+"',"+pregunta.getDirImagen()+"',"+pregunta.getSrespuestas().size()+")");
-					ArrayList<Respuesta> respuestas=pregunta.getSrespuestas();
-					for (int j=0; j<respuestas.size();j++)
-					{
-						Respuesta r=respuestas.get(j);
-						c.lanzar("insert into respuestas values("+examen+","+i+",'"+r.getTexto()+"',"+r.getValorSelect()+","+r.getValorNoSelect()+")");
-					}
-					procesarImagen(pregunta);
+					Respuesta r=respuestas.get(j);
+					c.lanzar("insert into respuestas values("+examen+","+i+",'"+r.getTexto()+"',"+r.getValorSelect()+","+r.getValorNoSelect()+")");
 				}
-				
-				
-			} catch (SQLException ex) {
-				
+				procesarImagen(pregunta);
 			}
+
+			request.getSession(false).setAttribute("preguntas",null);
+
+		} catch (SQLException ex) {
+
+		}
 			
 	}
 

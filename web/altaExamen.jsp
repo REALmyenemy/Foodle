@@ -16,7 +16,7 @@
 			<script src="js/functions.js" ></script>
 		</head>
 		<body id="altaExamen">
-			<div method="post" action="r" class="container">
+			<div class="container">
 				
 				<div class="row">
 					<form id="alta" class="col-sm-6 col-xs-12 container" action="ExamenServlet" method="post"  enctype="multipart/form-data" >
@@ -29,7 +29,7 @@
 							</c:forEach>
 							</select></p>
 						<input type="checkbox" name="desordenar" />&nbsp;&nbsp;<label for="desordenar">Desordenar preguntas y respuestas aleatoriamente durante el examen</label> 
-						<input type="submit" value="Crear nuevo ex&aacute;men" class="row" name="submit"/>
+						<input type="submit" value="Crear nuevo exámen" class="row" name="submit"/>
 						<c:forEach items="${sessionScope.preguntas}" var="pregunta" >
 							<h3><c:out value="${pregunta.pregunta}"></c:out></h3>
 						</c:forEach>
@@ -61,7 +61,7 @@
 				</div>
 				
 				
-			</form>
+		
 		</body>
 	</c:when>
 	<c:otherwise>

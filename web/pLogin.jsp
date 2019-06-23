@@ -33,7 +33,7 @@
 						<label for="altaexamen" class="link">Crear ex&aacute;men</label>
 						<input type="submit" class="hidden" id="altaexamen" value="" />
 					</form>-->
-						<a href="altaExamen.jsp" class="col-sm-6"></a>
+						<a href="altaExamen.jsp" class="col-sm-6">Crear ex&aacute;men</a>
 				</div>
 				
 				<div class="row">

@@ -3,6 +3,10 @@
     <servlet>
         <servlet-name>ExamenServlet</servlet-name>
         <servlet-class>Controlador.ExamenServlet</servlet-class>
+		<multipart-config>
+            <max-file-size>1000000</max-file-size>
+            <file-size-threshold>1000000</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>ExamenServlet</servlet-name>
@@ -13,4 +17,5 @@
             30
         </session-timeout>
     </session-config>
+
 </web-app>
