@@ -1,6 +1,7 @@
 package Controlador;
 
 import Modelo.*;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -113,32 +114,33 @@ public class ExamenServlet extends HttpServlet {
 	}
 	private void crearExamen(HttpServletRequest request)
 	{
-		
 		Conectar c= new Conectar();
 		
-		int var=1;
 		try {
 			String desordenar=request.getParameter("desordenar")!=null ? "true":"false";
-			c.lanzar("insert into examenes values (select count(*) from examenes as e,'"+request.getParameter("materia")+"',"+desordenar+")");
-			System.out.println("AAAAAAAAAAA"+var++);
-			c.ejecutar("select id from examen");
-			System.out.println("AAAAAAAAAAA"+var++);
+			c.lanzar("insert into examenes values ((select count(*) from examenes as e),'"+request.getParameter("materia")+"',"+desordenar+")");
+			
+			c.ejecutar("select id from examenes");
 			ResultSet rst=c.getRset();
-			System.out.println("AAAAAAAAAAA"+var++);
 			rst.next();
-			System.out.println("AAAAAAAAAAA"+var++);
+			
 			ArrayList<JPregunta> preguntas=(ArrayList<JPregunta>)request.getSession(false).getAttribute("preguntas");
-			System.out.println("AAAAAAAAAAA"+var++);
 			int examen=rst.getInt(1);
-			System.out.println("AAAAAAAAAAA"+var++);
-			String materia=request.getParameter("materia");
-			System.out.println("AAAAAAAAAAA"+var++);
+			
+			new File(getServletContext().getRealPath("/")+examen).mkdir();
+
 			for (int i=0;i<preguntas.size();i++)
 			{
+				System.out.println("0000000000000000");
 				JPregunta pregunta=preguntas.get(i);
-				pregunta.setDirImagen(getServletContext().getRealPath("/")+examen+"/"+pregunta.getImagen().getSubmittedFileName());
+				System.out.println("aaaaaaaaaa");
+				if (pregunta.getImagen()!=null)
+					pregunta.setDirImagen(getServletContext().getRealPath("/")+examen+"/"+pregunta.getImagen().getSubmittedFileName());
+				else
+					pregunta.setDirImagen("");
 
-				c.lanzar("insert into preguntas values ("+examen+"',"+pregunta.getDirImagen()+"',"+pregunta.getSrespuestas().size()+")");
+				c.lanzar("insert into preguntas values ((select count(*) from preguntas as p),"+examen+",'"+pregunta.getPregunta()+"','"+pregunta.getDirImagen()+"',"+pregunta.getSrespuestas().size()+")");
+				System.out.println("ccccccccccccccc");
 				ArrayList<Respuesta> respuestas=pregunta.getSrespuestas();
 				for (int j=0; j<respuestas.size();j++)
 				{
