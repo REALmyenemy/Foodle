@@ -14,11 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+@MultipartConfig
 public class ExamenServlet extends HttpServlet {
 
 	private final int max_size = 1024 * 1024 * 16;
@@ -147,7 +149,7 @@ public class ExamenServlet extends HttpServlet {
 					Respuesta r=respuestas.get(j);
 					
 					c.lanzar("insert into respuestas values((select count(*) from respuestas as r where examen="+examen+" and pregunta="+i+"),"+examen+","+i+",'"+r.getTexto()+"',"+r.getValorSelect()+","+r.getValorNoSelect()+")");
-					System.out.println("qqqqqqqqqqqqqqqqqqqqq");
+					
 				}
 				if (pregunta.getDirImagen()!="")
 					procesarImagen(pregunta);

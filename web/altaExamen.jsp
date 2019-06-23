@@ -35,7 +35,7 @@
 						</c:forEach>
 					</form>
 
-					<form id="alta" class="col-sm-6 col-xs-12 container" action="ExamenServlet" method="post" >
+					<form id="alta" class="col-sm-6 col-xs-12 container" action="ExamenServlet" method="post" enctype="multipart/form-data" >
 						<h5 class="row">Pregunta:&nbsp;<input type="text" name="pregunta" /></h5>
 						
 						<input type="file" name="imagen" class="row" /> <br />
