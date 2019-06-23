@@ -6,6 +6,7 @@ public class Examen
 {
 	private int id;
 	private String materia;
+	private boolean desordenar;
 	private ArrayList<Pregunta>preguntas=new ArrayList<>();
 
 	/**
@@ -15,6 +16,10 @@ public class Examen
 		return id;
 	}
 
+	public boolean getDesordenar()
+	{
+		return desordenar;
+	}
 	/**
 	 * @param id the id to set
 	 */
@@ -48,6 +53,10 @@ public class Examen
 	 */
 	public void setPreguntas(ArrayList<Pregunta> preguntas) {
 		this.preguntas = preguntas;
+	}
+
+	public void setDesordenar(boolean aBoolean) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 	
 }

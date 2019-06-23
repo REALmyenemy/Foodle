@@ -24,8 +24,9 @@ public class ExamenController
 			while (rst.next())
 			{
 				aux=new Examen();
-				aux.setId(Integer.parseInt());
-				
+				aux.setId(rst.getInt(1));
+				aux.setMateria(rst.getString(2));
+				aux.setDesordenar(rst.getBoolean(3));
 				examenes.add(aux);
 			}
 			return examenes;
