@@ -1,40 +1,36 @@
-<%@ page import = "java.io.*,java.util.*,java.sql.*"%>
-<%@ page import = "javax.servlet.http.*,javax.servlet.*" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix = "c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
- 
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
 <html>
-   <head>
-      <title>SELECT Operation</title>
-   </head>
+    <c:choose>
+	<c:when test="${sessionScope.usuario.class.name == 'Modelo.Alumno'}">
+		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+			<title>Foodle</title>
+		</head>
+		<body>
+			<c:set var="pendientes" target="${ec.examenesPendientes(sessionScope.usuario)}"  ></c:set>
+			<c:forEach var="examen" items="pendientes">
+				<form class="row" action="test.jsp" method="post">
+					<div class="col-xs-4">
+						<c:out value="${examen.materia}"></c:out>
+					</div>
+					<div class="col-xs-4">
+						<input type="submit" id="exId" name="exId" value="<c:out value="${examen.id}"></c:out>" class="hidden">
+					</div>
+					<div class="col-xs-4">
+						<label for="exId">Empezar ex&aacute;men</label>
+					</div>
+				</form>
+				
+			</c:forEach> 
 
-   <body>
-      <%--<sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver"--%>
-      <sql:setDataSource var = "snapshot" driver = "com.mysql.jdbc.Driver"
-         url = "jdbc:mysql://localhost/TEST"
-         user = "root"  password = ""/>
- 
-      <sql:query dataSource = "${snapshot}" var = "result">
-         SELECT * from Employees;
-      </sql:query>
- 
-      <table border = "1" width = "100%">
-         <tr>
-            <th>Emp ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Age</th>
-         </tr>
-         
-         <c:forEach var = "row" items = "${result.rows}">
-            <tr>
-               <td><c:out value = "${row.id}"/></td>
-               <td><c:out value = "${row.first}"/></td>
-               <td><c:out value = "${row.last}"/></td>
-               <td><c:out value = "${row.age}"/></td>
-            </tr>
-         </c:forEach>
-      </table>
- 
-   </body>
+		</body>
+		
+	</c:when>
+	<c:otherwise>
+		<c:redirect url = "/"/>
+	</c:otherwise>
+	
+</c:choose>
+
 </html>

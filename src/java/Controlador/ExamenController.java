@@ -2,23 +2,28 @@ package Controlador;
 
 import Modelo.Alumno;
 import Modelo.Examen;
+import Modelo.JExamen;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class ExamenController
 {
-	private static Conectar c=new Conectar();
+	private Conectar c=new Conectar();
 	
-	public static ArrayList<Examen> examenesPendientes(Alumno alumno)
+	public ArrayList<Examen> examenesPendientes(Alumno alumno)
 	{
-		String al=alumno.getId();
+		String usu=alumno.getId();
 		try
 		{
+			c.ejecutar("select id from usuario where usuario='"+usu+"'");
+			ResultSet rst=c.getRset();
+			rst.next();
+			int al=rst.getInt(1);
 			c.ejecutar("select * from examenes where materia in "
 						+ "(select materia from matriculas where alumno="+al+")"
 					+ " and id not in "
 						+ "(select examen from instanciaexamen where alumno="+al+")");
-			ResultSet rst=c.getRset();
+			
 			ArrayList<Examen> examenes=new ArrayList();
 			Examen aux;
 			while (rst.next())
@@ -35,6 +40,11 @@ public class ExamenController
 		{
 			return null;
 		}
+		
+	}
+	
+	public JExamen traerExamen(int id)
+	{
 		
 	}
 	
